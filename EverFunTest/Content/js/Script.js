@@ -215,7 +215,7 @@ function PostLogin() {
     });
 }
 /* 登出呼叫 */
-function LoginOut() {
+function LoginOut(type) {
     localStorage.clear();
     $.ajax({
         url: '/Home/LoginOut/',
@@ -229,7 +229,9 @@ function LoginOut() {
             if (res.success == true) {
                 $("#info").hide();
                 $("#Login").fadeIn();
-                callSwal("success", res.responseText, "登出成功");
+                if (type != 1) {
+                    callSwal("success", res.responseText, "登出成功");
+                }
             } else {
                 callSwal("warning", res.responseText, "帳號或密碼錯誤，或此帳號尚未註冊。");
                 return;
@@ -276,7 +278,7 @@ function PostInfo() {
             } else {
                 callSwal("warning", res.responseText, res.info);
                 if (res.responseText == "你已自動登出") {
-                    LoginOut();
+                    LoginOut(1);
                 }
                 return;
             }
