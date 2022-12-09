@@ -30,7 +30,6 @@ namespace EverFunTest.Models.BusinessLogic
                 if (ds.Tables[0].Rows.Count >= 1)
                 {
                     string UserLoginDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    string AccessToken = FormsAuthentication.HashPasswordForStoringInConfigFile(Email + UserLoginDate, "MD5").ToLower();
 
                     // 寫入Log
                     SQLQuery = "INSERT INTO ADM_Logs (log_status, log_description, login_id, login_pw, log_time) VALUES ('1','login ok','" + Email + "', '" + MD5_Password + "', '" + UserLoginDate + "')";
@@ -40,6 +39,7 @@ namespace EverFunTest.Models.BusinessLogic
                     MySQLConnector.SQLExecute(SQLQuery);
 
                     // 生成Token 3小時 三小時自動登出
+                    string AccessToken = FormsAuthentication.HashPasswordForStoringInConfigFile(Email + UserLoginDate, "MD5").ToLower();
                     string AccessTime = DateTime.Now.AddMinutes(180).ToString("yyyy-MM-dd HH:mm:ss");
                     SQLQuery = "INSERT INTO ADM_LoginKeys (login_key, login_id, access_time, login_time) VALUES ('" + AccessToken + "','" + Email + "' , '" + AccessTime + "', '" + UserLoginDate + "')";
                     MySQLConnector.SQLExecute(SQLQuery);

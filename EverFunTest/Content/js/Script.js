@@ -275,6 +275,9 @@ function PostInfo() {
                 callSwal("success", "更改成功", "");
             } else {
                 callSwal("warning", res.responseText, res.info);
+                if (res.responseText == "你已自動登出") {
+                    LoginOut();
+                }
                 return;
             }
         },

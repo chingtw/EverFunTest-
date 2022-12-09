@@ -108,22 +108,33 @@ namespace EverFunTest.Controllers
         [Obsolete]
         public async Task<ActionResult> GoPostInfo(string id, string photoData, string name, string enname, string phone,string gender,string birthday,string address,string pw)
         {
-            try
+           
+            string sAccessToken = Convert.ToString(Session["Token"] ?? "").Trim();
+            string Feedback = logonchecker.permission(sAccessToken);
+            if (Feedback == "Pass")
             {
-               string p = photoData; string n = name ; string en = enname; string ph = phone; string gd = gender; string bd = birthday; string ad = address;
-                var res = await PostInfo.PostInfoList(id, p, name, en, ph, gd, bd, ad, pw);
-                string str = JsonConvert.SerializeObject(res.Data);
-                if (res.Code == 1)
+                return Json(new { success = false, responseText = "你已自動登出", info = "系統3小時自動登出" }, JsonRequestBehavior.DenyGet);
+
+            }
+            else {
+                try
                 {
-                    return Json(new { success = true, responsedata = String.Format("{0}", str) }, JsonRequestBehavior.DenyGet);
+                    string p = photoData; string n = name; string en = enname; string ph = phone; string gd = gender; string bd = birthday; string ad = address;
+                    var res = await PostInfo.PostInfoList(id, p, name, en, ph, gd, bd, ad, pw);
+                    string str = JsonConvert.SerializeObject(res.Data);
+                    if (res.Code == 1)
+                    {
+                        return Json(new { success = true, responsedata = String.Format("{0}", str) }, JsonRequestBehavior.DenyGet);
+                    }
+                    else
+                        return Json(new { success = false, responseText = "修改失敗", info = res.Message }, JsonRequestBehavior.DenyGet);
                 }
-                else
-                    return Json(new { success = false, responseText = "修改失敗", info = res.Message }, JsonRequestBehavior.DenyGet);
+                catch (Exception ee)
+                {
+                    return Json(new { success = false, responseText = "執行失敗" }, JsonRequestBehavior.DenyGet);
+                }
             }
-            catch (Exception ee)
-            {
-                return Json(new { success = false, responseText = "執行失敗" }, JsonRequestBehavior.DenyGet);
-            }
+          
         }
         #endregion
     }
