@@ -111,7 +111,7 @@ namespace EverFunTest.Controllers
            
             string sAccessToken = Convert.ToString(Session["Token"] ?? "").Trim();
             string Feedback = logonchecker.permission(sAccessToken);
-            if (Feedback == "Pass")
+            if (Feedback == "Overtime")
             {
                 return Json(new { success = false, responseText = "你已自動登出", info = "系統3小時自動登出" }, JsonRequestBehavior.DenyGet);
 
