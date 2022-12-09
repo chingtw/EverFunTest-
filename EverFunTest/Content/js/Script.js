@@ -333,7 +333,7 @@ function callSwalmixin(type, title) {
     })
 }
 //大頭照上傳
-$('input').on('change', function (e) {
+$('#upload_img').on('change', function (e) {
     const file = this.files[0];
 
     const fr = new FileReader();
