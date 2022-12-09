@@ -1,6 +1,7 @@
 # EverFunTest- 長汎面試技術考題成品 孫誠慶
 
 **線上Demo 連結 http://163.44.249.185/Home/Index**
+**專案下載 連結 https://drive.google.com/drive/folders/1_wlggYKoQEXjQWVVeKwFCXBAN5oN4xhZ?usp=sharing**  
   
 ### 使用環境  
 VPS - Conoha 日本 Server  
