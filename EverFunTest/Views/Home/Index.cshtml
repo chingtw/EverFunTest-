@@ -1,0 +1,177 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Content/js/jquery-1.8.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        img {
+            border-top-left-radius: 15%;
+            border-top-right-radius: 15%;
+            border-bottom-right-radius: 20%;
+            border-bottom-left-radius: 20%;
+            height: 150px;
+            width: 150px;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            margin: auto;
+        }
+
+            .form-signin .checkbox {
+                font-weight: 400;
+            }
+
+            .form-signin .form-control {
+                position: relative;
+                box-sizing: border-box;
+                height: auto;
+                padding: 10px;
+                font-size: 16px;
+            }
+
+                .form-signin .form-control:focus {
+                    z-index: 2;
+                }
+
+            .form-signin input[type="email"] {
+                margin-bottom: -1px;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            .form-signin input[type="password"] {
+                margin-bottom: 10px;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+
+        #loding_bx {
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+            top: 0;
+            left: 0;
+            background-color: rgb(74 71 68 / 64%);
+            z-index: 11;
+            overflow: auto;
+            display: none;
+        }
+
+        #loding_code {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-wrap: wrap;
+            height: 800px;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Content/css/loaders.css">
+</head>
+<body class="text-center">
+    <input hidden id="Mode" value="@ViewBag.Mode" />
+    <div id="loding_bx">
+        <div class="infobx_1" id="loding_code">
+            <span class="loader form-signin"></span>
+        </div>
+    </div>
+    <!--  -->
+    <div id="Login" style="display:none" class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">歡迎來到會員平台</h1>
+        <input ID="AdminID" type="text" class="form-control" placeholder="您的帳號(Email)" />
+        <input ID="AdminName" type="text" class="form-control" placeholder="您的姓名" style="display:none" />
+        <input ID="AdminPhome" type="tel" class="form-control" MaxLength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" placeholder="您的手機號碼" style="display:none" />
+        <input ID="AdminPW" type="password" MaxLength="30" class="form-control" placeholder="您的密碼" />
+        <input ID="AdminPW2" type="password" MaxLength="30" class="form-control" placeholder="確認您的密碼" style="display:none" />
+        <div class="checkbox mb-3"></div>
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                <label class="form-check-label" for="invalidCheck">
+                    記住帳號
+                </label>
+            </div>
+        </div>
+        <div class="checkbox mb-3"></div>
+        <button ID="Button1" class="btn btn-lg btn-primary btn-block" onclick="LoginByPassword()">登入</button>
+        <button ID="Button2" class="btn btn-lg btn-primary btn-block">註冊</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2022 長汎面試技術題目成品 - 孫誠慶</p>
+    </div>
+    <div id="info" style="display:none" class="form-signin">
+
+        <div class="container">
+            <img src="~/Content/img/photo.jpg" />
+        </div>
+        <div class="checkbox mb-3"></div>
+        <label class="btn btn-info">
+            <input id="upload_img" style="display:none;" type="file" accept="image/*">
+            更換大頭貼
+        </label>
+        <div class="checkbox mb-3"></div>
+        <label for="validationCustom01" class="form-label">您的帳號(Email)</label>
+        <input ID="infoAdminID" class="form-control" placeholder="您的帳號" disabled />
+        <div class="checkbox mb-3"></div>
+        <label for="validationCustom01" class="form-label">您的姓名</label>
+        <input ID="infoAdminName" class="form-control" placeholder="您的姓名" />
+        <div class="checkbox mb-3"></div>
+        <label for="validationCustom01" class="form-label">您的英文姓名</label>
+        <input ID="infoAdminEnName" class="form-control" placeholder="您的英文姓名" />
+        <div class="checkbox mb-3"></div>
+        <label for="validationCustom01" class="form-label">您的手機</label>
+        <input ID="infoAdminPhome" type="tel" class="form-control" MaxLength="10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" placeholder="您的手機號碼" />
+        <div class="checkbox mb-3"></div>
+        <label for="validationCustom01" class="form-label">您的性別</label>
+        <select class="custom-select" id="infoAdminGender">
+            <option value="N" selected>------</option>
+            <option value="B">男</option>
+            <option value="G">女</option>
+        </select>
+        <div class="checkbox mb-3"></div>
+        <label for="validationCustom01" class="form-label">您的生日</label>
+        <input type="text" value="2022/12/8" id="DisplayDate01" class="form-control hasDatepicker">
+
+        <div class="checkbox mb-3"></div>
+        <label for="validationCustom01" class="form-label">您的住址</label>
+        <input ID="infoAdminAD" class="form-control" placeholder="您的住址" />
+        <div class="checkbox mb-3"></div>
+        <label class="form-label">會員註冊時間 : <span id="AddTime"></span></label>
+        <div class="checkbox mb-3"></div>
+        <button ID="Button3" class="btn btn-lg btn-primary btn-block" onclick="PostInfo()">更新資料</button>
+        <button ID="Button4" class="btn btn-lg btn-primary btn-block" onclick="LoginOut()">登出</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2022 長汎面試技術題目成品 - 孫誠慶</p>
+    </div>
+
+    <script type="text/javascript" src="~/Content/js/Script.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.3/dist/sweetalert2.all.min.js"></script>
+</body>
+</html>
